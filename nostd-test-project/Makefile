@@ -5,9 +5,9 @@ LLVM_VERSION := 14
 export RUSTFLAGS := -Cembed-bitcode=yes --emit=llvm-bc -Clinker-plugin-lto -Clinker=clang-$(LLVM_VERSION) -Clink-arg=-fuse-ld=lld-$(LLVM_VERSION) -Clink-args=-lc ${RUSTFLAGS}
 
 # allow unstable things with stable compiler:
-export RUSTC_BOOTSTRAP := 1
+# export RUSTC_BOOTSTRAP := 1
 
-.PHONY: bitcode assembly clean
+.PHONY: bitcode assembly clean verify
 
 bitcode: src/main.rs build.rs
 	cargo build --release
@@ -22,3 +22,8 @@ clean:
 verify: bitcode
 	BC_FILE=$$(ls -t1 target/release/deps/test_project*.bc | head -n 1); \
 	sea bpf -m64 --bv-cex --cex=cex.ll $$BC_FILE
+
+cex: verify
+	BC_FILE=$$(ls -t1 target/release/deps/test_project*.bc | head -n 1); \
+	sea exe -m64 $$BC_FILE cex.ll -o cex
+
