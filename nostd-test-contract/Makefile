@@ -14,7 +14,7 @@ bitcode: src/main.rs build.rs
 	cargo +$(RUST_VERSION) build --release
 
 assembly: bitcode
-	llvm-dis-$(LLVM_VERSION) ./target/release/deps/test_nostd-*.bc
+	llvm-dis-$(LLVM_VERSION) ./target/release/deps/nostd_test_contract-*.bc
 
 clean:
 	cargo clean

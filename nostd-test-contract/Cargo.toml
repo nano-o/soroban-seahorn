@@ -6,7 +6,8 @@ edition = "2021"
 [profile.release]
 panic = "abort"
 lto = "fat"
-debug = true
+# for small bitcode, do not set debug to true
+# debug = true
 
 [profile.dev]
 panic = "abort"
@@ -23,7 +24,7 @@ soroban-sdk-macros = { path = "../rs-soroban-sdk/soroban-sdk-macros" }
 # rs-soroban-sdk finds rs-soroban-env at https://github.com/stellar/rs-soroban-env so we need to patch that, it seems:
 [patch."https://github.com/stellar/rs-soroban-env"]
 soroban-env-common = { path = "../rs-soroban-env/soroban-env-common" }
-soroban-env-guest = { path = "../rs-soroban-env/soroban-env-guest" }
+# soroban-env-guest = { path = "../rs-soroban-env/soroban-env-guest" }
 # we don't need the host because we are using the special no_std environment:
 # soroban-env-host = { path = "../rs-soroban-env/soroban-env-host/" }
 
