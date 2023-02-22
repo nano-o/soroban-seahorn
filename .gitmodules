@@ -1,0 +1,6 @@
+[submodule "rs-soroban-sdk"]
+	path = rs-soroban-sdk
+	url = git@github.com:nano-o/rs-soroban-sdk.git
+[submodule "rs-soroban-env"]
+	path = rs-soroban-env
+	url = git@github.com:nano-o/rs-soroban-env.git

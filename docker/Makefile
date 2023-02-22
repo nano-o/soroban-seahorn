@@ -1,6 +1,5 @@
-.PHONY: base rustc-llvm14 all seahorn
+.PHONY: base rustc-llvm14 all seahorn seahorn-rust
 
-# all: rustc-llvm14 seahorn
 all: seahorn-rust
 
 base: base/Dockerfile
@@ -19,6 +18,6 @@ seahorn: dev-tools seahorn/Dockerfile
 	cd $@ && \
 	docker build -t $@:latest --build-arg FROM_IMAGE="dev-tools:latest" .
 
-seahorn-rust: seahorn seahorn-rust/Dockerfile
+seahorn-rust: seahorn rustc-llvm14 seahorn-rust/Dockerfile
 	cd $@ && \
 	docker build -t $@:latest --build-arg FROM_IMAGE="seahorn:latest" --build-arg RUSTC_IMAGE="rustc-llvm14:latest" .
