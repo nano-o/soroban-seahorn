@@ -1,0 +1,17 @@
+version: '3'
+services:
+  seahorn-rust:
+    image: seahorn-rust:latest
+    volumes:
+      - ../nostd-test-contract:/home/user/nostd-test-contract:rw
+      - ../rs-soroban-env:/home/user/rs-soroban-env:rw
+      - ../rs-soroban-sdk:/home/user/rs-soroban-sdk:rw
+    command: /bin/bash
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    container_name: seahorn-rust
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_PTRACE
+
