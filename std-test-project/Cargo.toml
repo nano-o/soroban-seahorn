@@ -1,0 +1,19 @@
+[package]
+name = "std-test-project"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+strip = true
+panic = "abort"
+lto = "fat"
+codegen-units = 1
+opt-level = 'z'
+# debug = true
+# overflow-checks = true
+
+[build-dependencies]
+cc = { version = "1.0" }
+
+[dependencies]
+libc = {version = "0.2", default-features = false}
