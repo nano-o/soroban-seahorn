@@ -4,12 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [profile.release]
-debug = true
+# debug = true
 panic = "abort"
 lto = "fat"
+opt-level = z
 # overflow-checks = true
 
 [build-dependencies]
 cc = { version = "1.0" }
 
 [dependencies]
+libc = {version = "0.2", default-features = false}

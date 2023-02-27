@@ -1,7 +1,6 @@
 LLVM_VERSION := 15
-# LLVM_VERSION := 14
-# RUST_VERSION = stage2
 RUST_VERSION := "nightly-x86_64-unknown-linux-gnu"
+# to override the above, run with e.g. `make bitcode LLVM_VERSION=14 RUST_VERSION=stage2`
 
 export RUSTFLAGS := -Cembed-bitcode=yes --emit=llvm-bc -Clinker-plugin-lto -Clinker=clang-$(LLVM_VERSION) -Clink-arg=-fuse-ld=lld-$(LLVM_VERSION) -Warithmetic-overflow -Coverflow-checks=yes
 
