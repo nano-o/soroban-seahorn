@@ -1,0 +1,29 @@
+[package]
+name = "test-env-verification"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+panic = "abort"
+lto = "fat"
+strip = true
+codegen-units = 1
+opt-level = "z"
+
+[dependencies]
+soroban-sdk = {version = "0.6.0", features = ["testutils"]}
+libc = {version = "0.2", default-features = false}
+
+[patch.crates-io]
+soroban-sdk = { path = "../rs-soroban-sdk/soroban-sdk" }
+soroban-auth = { path = "../rs-soroban-sdk/soroban-auth" }
+soroban-spec = { path = "../rs-soroban-sdk/soroban-spec" }
+soroban-sdk-macros = { path = "../rs-soroban-sdk/soroban-sdk-macros" }
+
+# rs-soroban-sdk finds rs-soroban-env at https://github.com/stellar/rs-soroban-env so we need to patch that, it seems:
+[patch."https://github.com/stellar/rs-soroban-env"]
+soroban-env-common = { path = "../rs-soroban-env/soroban-env-common" }
+soroban-env-host = { path = "../rs-soroban-env/soroban-env-host" }
+# soroban-env-guest = { path = "../rs-soroban-env/soroban-env-guest" }
+# we don't need the host because we are using the special no_std environment:
+# soroban-env-host = { path = "../rs-soroban-env/soroban-env-host/" }
