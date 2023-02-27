@@ -14,6 +14,9 @@ opt-level = "z"
 soroban-sdk = {version = "0.6.0", features = ["testutils"]}
 libc = {version = "0.2", default-features = false}
 
+[build-dependencies]
+cc = { version = "1.0" }
+
 [patch.crates-io]
 soroban-sdk = { path = "../rs-soroban-sdk/soroban-sdk" }
 soroban-auth = { path = "../rs-soroban-sdk/soroban-auth" }
