@@ -46,12 +46,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends ninja-build cma
 USER user
 
 RUN ./x.py setup user
-RUN echo '[llvm]' >> ./config.toml && \
-	echo 'targets = "X86"' >> ./config.toml && \
-	echo 'experimental-targets = ""' >> ./config.toml
+COPY --chown=${USER_UID}:${USER_UID} config.toml /home/user/rust/config.toml
 RUN ./x.py build
-RUN rustup toolchain link stage2 build/x86_64-unknown-linux-gnu/stage2
-# check that the stage2 compiler is installed:
-RUN rustc +stage2 -vV
+RUN ./x.py install
+RUN rustup toolchain link rust-1.67-llvm14 /home/user/rust-install/
+# check that it worked
+RUN rustc +rust-1.67-llvm14 -vV
 
-WORKDIR /home/user/
+WORKDIR ${USER_HOME}

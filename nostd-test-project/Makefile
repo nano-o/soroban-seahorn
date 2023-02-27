@@ -11,7 +11,7 @@ export RUSTFLAGS := -Cembed-bitcode=yes --emit=llvm-bc -Clinker-plugin-lto -Clin
 .PHONY: bitcode assembly clean verify
 
 bitcode: src/main.rs build.rs
-	cargo build --release
+	cargo +$(RUST_VERSION) build --release
 
 assembly: bitcode
 	llvm-dis-$(LLVM_VERSION) ./target/release/deps/test_project*.bc

@@ -9,4 +9,4 @@ USER ${USERNAME}
 RUN mkdir ${USER_HOME}/.cargo/ && mkdir ${USER_HOME}/.rustup/
 COPY --from=rustc-image ${USER_HOME}/.cargo/ ${USER_HOME}/.cargo/
 COPY --from=rustc-image ${USER_HOME}/.rustup/ ${USER_HOME}/.rustup/
-COPY --from=rustc-image ${USER_HOME}/rust/build/x86_64-unknown-linux-gnu/ ${USER_HOME}/rust/build/x86_64-unknown-linux-gnu/
+COPY --from=rustc-image ${USER_HOME}/rust-install/ ${USER_HOME}/rust-install/

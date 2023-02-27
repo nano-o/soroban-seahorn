@@ -4,6 +4,8 @@ services:
     image: seahorn-rust:latest
     volumes:
       - ../nostd-test-contract:/home/user/nostd-test-contract:rw
+      - ../std-test-project:/home/user/std-test-project:rw
+      - ../nostd-test-project:/home/user/nostd-test-project:rw
       - ../rs-soroban-env:/home/user/rs-soroban-env:rw
       - ../rs-soroban-sdk:/home/user/rs-soroban-sdk:rw
     command: /bin/bash
