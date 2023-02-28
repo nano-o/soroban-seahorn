@@ -15,5 +15,5 @@ opt-level = 'z'
 [build-dependencies]
 cc = { version = "1.0" }
 
-[dependencies]
-libc = {version = "0.2", default-features = false}
+# [dependencies]
+# libc-alloc = {path = "../libc-alloc"}

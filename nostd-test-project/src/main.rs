@@ -7,9 +7,8 @@ extern "C" {
     fn __VERIFIER_nondet_u32() -> u32;
 }
 
-mod libc_alloc;
+use libc_alloc::LibcAlloc;
 
-use crate::libc_alloc::LibcAlloc;
 #[global_allocator]
 static ALLOCATOR: LibcAlloc = LibcAlloc;
 

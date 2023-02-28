@@ -24,9 +24,12 @@
 // We need a way to allocate memory that is supported by Seahorn.
 // Seahorn only supports malloc, free, and alloca
 
+#![no_std]
+
 use core::alloc::{GlobalAlloc, Layout};
 use core::ffi::c_void;
 use core::ptr;
+use core::cmp;
 
 #[cfg(target_family = "unix")]
 extern crate libc;
@@ -44,8 +47,6 @@ unsafe impl GlobalAlloc for LibcAlloc {
 
     #[inline]
     unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
-        // Unfortunately, calloc doesn't make any alignment guarantees, so the memory
-        // has to be manually zeroed-out.
         let ptr = self.alloc(layout);
         if !ptr.is_null() {
             ptr::write_bytes(ptr, 0, layout.size());
@@ -59,8 +60,14 @@ unsafe impl GlobalAlloc for LibcAlloc {
     }
 
     #[inline]
-    unsafe fn realloc(&self, ptr: *mut u8, _layout: Layout, new_size: usize) -> *mut u8 {
-        // TODO: implement using malloc
-        libc::realloc(ptr as *mut c_void, new_size) as *mut u8
+    unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
+        // Seahorn does not support libc::realloc
+        // TODO: is this okay?
+        let new_ptr = libc::malloc(new_size) as *mut u8;
+        let num_to_copy = cmp::min(new_size, layout.size());
+        ptr::copy_nonoverlapping(ptr, new_ptr, num_to_copy);
+        new_ptr
     }
 }
+
+
