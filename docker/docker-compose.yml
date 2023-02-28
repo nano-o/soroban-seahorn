@@ -8,6 +8,10 @@ services:
       - ../nostd-test-project:/home/user/nostd-test-project:rw
       - ../rs-soroban-env:/home/user/rs-soroban-env:rw
       - ../rs-soroban-sdk:/home/user/rs-soroban-sdk:rw
+      - ../rs-stellar-xdr/:/home/user/rs-stellar-xdr:rw
+      - ../libc-alloc/:/home/user/libc-alloc:rw
+      - ../test-nostd-xdr:/home/user/test-nostd-xdr:rw
+      - ../seahorn-stubs:/home/user/seahorn-stubs:rw
     command: /bin/bash
     stdin_open: true # docker run -i
     tty: true        # docker run -t

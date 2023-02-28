@@ -1,6 +1,8 @@
 #![no_std]
 #![no_main]
 
+#![feature(default_alloc_error_handler)]
+
 extern "C" {
     fn __VERIFIER_error() -> !;
     fn __VERIFIER_assume(pred: i32);

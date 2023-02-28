@@ -1,0 +1,18 @@
+[package]
+name = "test-nostd-xdr"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = "fat"
+opt-level = "z"
+
+[dependencies]
+libc-alloc = {path = "../libc-alloc"}
+seahorn-stubs = {path = "../seahorn-stubs"}
+stellar-xdr = { path = "../rs-stellar-xdr/", default-features = false, features = ["next","alloc"] }
+
+[build-dependencies]
+cc = { version = "1.0" }

@@ -4,3 +4,6 @@
 [submodule "rs-soroban-env"]
 	path = rs-soroban-env
 	url = git@github.com:nano-o/rs-soroban-env.git
+[submodule "rs-stellar-xdr"]
+	path = rs-stellar-xdr
+	url = git@github.com:nano-o/rs-stellar-xdr/
