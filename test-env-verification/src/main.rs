@@ -19,10 +19,8 @@ fn error() -> ! {
 }
 
 use soroban_sdk::Env;
+use libc_alloc::LibcAlloc;
 
-mod libc_alloc;
-
-use crate::libc_alloc::LibcAlloc;
 #[global_allocator]
 static ALLOCATOR: LibcAlloc = LibcAlloc;
 

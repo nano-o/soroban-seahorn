@@ -12,7 +12,7 @@ opt-level = "z"
 
 [dependencies]
 soroban-sdk = {version = "0.6.0", features = ["testutils"]}
-libc = {version = "0.2", default-features = false}
+libc-alloc = {path = "../libc-alloc"}
 
 [build-dependencies]
 cc = { version = "1.0" }
