@@ -1,0 +1,20 @@
+[package]
+name = "test-sdk-verification"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = "fat"
+opt-level = "z"
+
+[dependencies]
+soroban-sdk = { path = "../rs-soroban-sdk/soroban-sdk/", features = ["verification"] }
+
+[patch."https://github.com/stellar/rs-soroban-env"]
+soroban-env-common = { path = "../rs-soroban-env/soroban-env-common" }
+soroban-env-guest = { path = "../rs-soroban-env/soroban-env-guest" }
+
+[patch."https://github.com/stellar/rs-stellar-xdr"]
+stellar-xdr = { path = "../rs-stellar-xdr/" }
