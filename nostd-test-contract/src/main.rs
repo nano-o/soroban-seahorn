@@ -1,5 +1,7 @@
 #![no_std]
 #![no_main]
+#![feature(default_alloc_error_handler)]
+
 use soroban_sdk::{symbol, Env, Symbol, contractimpl, BytesN};
 
 // use seahorn_stubs::*;
@@ -34,8 +36,8 @@ impl IncrementContract {
 #[no_mangle]
 pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
     let e = Env::default();
-    // TODO: for now the following panicks (which calls __VERIFIER_error())
     let id: BytesN<32> = BytesN::from_array(&e, &[0 as u8; 32]);
+    // TODO: for now the following panicks (which calls __VERIFIER_error())
     // let client = IncrementContractClient::new(&e, &id);
     // TODO: now we need to be able to register the contract
     // client.increment();

@@ -28,6 +28,3 @@ soroban-env-common = { path = "../rs-soroban-env/soroban-env-common" }
 soroban-env-verification = { path = "../rs-soroban-env/soroban-env-verification" }
 [patch."https://github.com/stellar/rs-stellar-xdr"]
 stellar-xdr = { path = "../rs-stellar-xdr" }
-
-[build-dependencies]
-cc = "1.0"
