@@ -36,7 +36,7 @@ pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
     let e = Env::default();
     // TODO: for now the following panicks (which calls __VERIFIER_error())
     let id: BytesN<32> = BytesN::from_array(&e, &[0 as u8; 32]);
-    let client = IncrementContractClient::new(&e, &id);
+    // let client = IncrementContractClient::new(&e, &id);
     // TODO: now we need to be able to register the contract
     // client.increment();
     0

@@ -8,6 +8,15 @@ panic = "abort"
 codegen-units = 1
 lto = "fat"
 opt-level = "z"
+# NOTE: without lto or with low opt-level we can get a linking error (missing rust_eh_personality) if the core lib has been built with unwinding.
+# See https://github.com/rust-lang/rust/issues/106864#issuecomment-1385796971
+# using -Z build-std=core,alloc,panic_abort seems to help
+
+[profile.release-debug]
+inherits = "release"
+opt-level = 0
+lto = true
+debug = true
 
 [dependencies]
 soroban-sdk = {path = "../rs-soroban-sdk/soroban-sdk", features = ["verification"]}
