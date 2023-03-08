@@ -35,11 +35,15 @@ impl IncrementContract {
 
 #[no_mangle]
 pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
+    // panic!();
+    // error();
     let e = Env::default();
-    let id: BytesN<32> = BytesN::from_array(&e, &[0 as u8; 32]);
-    // TODO: for now the following panicks (which calls __VERIFIER_error())
-    // let client = IncrementContractClient::new(&e, &id);
-    // TODO: now we need to be able to register the contract
-    // client.increment();
+
+    // TODO: the following panics in vec_len, which we have not implemented in the Host
+    let id = e.register_contract(IncrementContract);
+
+
+    let client = IncrementContractClient::new(&e, &id);
+    client.increment(); // TODO: for now the following panicks (which calls __VERIFIER_error())
     0
 }
