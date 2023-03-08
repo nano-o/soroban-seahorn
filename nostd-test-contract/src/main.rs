@@ -39,11 +39,16 @@ pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
     // error();
     let e = Env::default();
 
-    // TODO: the following panics in vec_len, which we have not implemented in the Host
+    // let id: BytesN<32> = BytesN::from_array(&e, &[0 as u8; 32]);
     let id = e.register_contract(IncrementContract);
-
+    let b31 = id.get(31);
+    let b0 = id.get(0);
+    // if b31.unwrap() == 1 {
+        // panic!()
+    // }
 
     let client = IncrementContractClient::new(&e, &id);
-    client.increment(); // TODO: for now the following panicks (which calls __VERIFIER_error())
+    // TODO now we need to implement storage access
+    client.increment();
     0
 }
