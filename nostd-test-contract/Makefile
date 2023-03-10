@@ -38,8 +38,9 @@ verify: bitcode
 cex: verify
 	sea exe -m64 $$(./find_bc_file.sh) cex.ll -o cex
 
-SEA_CONFIG := /home/user/verify-c-common/seahorn/sea_base.yaml
+SEA_CONFIG_DIR := /home/user/verify-c-common/seahorn
+SEA_CONFIG_FILE := sea_base.yaml
 
 verify-yama: bitcode
-	sea yama -y $(SEA_CONFIG) bpf $$(./find_bc_file.sh) 
+	sea yama -y $(SEA_CONFIG_DIR)/$(SEA_CONFIG_FILE) bpf $$(./find_bc_file.sh) 
 
