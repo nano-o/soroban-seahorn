@@ -4,7 +4,7 @@
 
 use soroban_sdk::{symbol, Env, Symbol, contractimpl, BytesN};
 
-// use seahorn_stubs::*;
+use seahorn_stubs::*;
 
 const COUNTER: Symbol = symbol!("COUNTER");
 
@@ -48,7 +48,7 @@ pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
     // }
 
     let client = IncrementContractClient::new(&e, &id);
-    // TODO now we need to implement storage access
     let res = client.increment();
+    assert(res == 2); // should fail
     res as i32
 }
