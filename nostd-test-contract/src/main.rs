@@ -35,8 +35,8 @@ impl IncrementContract {
 
 #[no_mangle]
 pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
-    // panic!();
-    // error();
+    // TODO: add method to create a symbolic counter value and check that we catch an overflow
+
     let e = Env::default();
 
     // let id: BytesN<32> = BytesN::from_array(&e, &[0 as u8; 32]);
@@ -49,6 +49,6 @@ pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
 
     let client = IncrementContractClient::new(&e, &id);
     // TODO now we need to implement storage access
-    client.increment();
-    0
+    let res = client.increment();
+    res as i32
 }
