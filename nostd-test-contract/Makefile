@@ -9,7 +9,12 @@ CARGO_FLAGS := -Z build-std=core,alloc,panic_abort --target=x86_64-unknown-linux
 # allow unstable things with stable compiler:
 export RUSTC_BOOTSTRAP := 1
 
-.PHONY: bitcode assembly clean
+.PHONY: bitcode assembly clean cargo-bloat executable debug-executable verify cex verify-yama
+
+cargo-bloat: export RUSTFLAGS := -Warithmetic-overflow -Coverflow-checks=yes -Cpanic=abort
+cargo-bloat: export CARGO_FLAGS := $(CARGO_FLAGS) --release
+cargo-bloat: src/main.rs
+	cargo +$(RUST_VERSION) bloat $(CARGO_FLAGS)
 
 executable: export RUSTFLAGS := -Warithmetic-overflow -Coverflow-checks=yes -Cpanic=abort
 executable: export CARGO_FLAGS := $(CARGO_FLAGS) --release
@@ -21,7 +26,7 @@ debug-executable: export CARGO_FLAGS := $(CARGO_FLAGS) --profile=release-debug
 debug-executable: src/main.rs
 	cargo +$(RUST_VERSION) build $(CARGO_FLAGS)
 
-bitcode: export RUSTFLAGS := -Cembed-bitcode=yes --emit=llvm-bc -Clinker-plugin-lto -Clinker=clang-$(LLVM_VERSION) -Clink-arg=-fuse-ld=lld-$(LLVM_VERSION) -Warithmetic-overflow -Coverflow-checks=yes -Cpanic=abort
+bitcode: export RUSTFLAGS := -Cembed-bitcode=yes --emit=llvm-bc -Clinker-plugin-lto -Clinker=clang-$(LLVM_VERSION) -Clink-arg=-fuse-ld=lld-$(LLVM_VERSION) -Cpanic=abort
 bitcode: export CARGO_FLAGS := $(CARGO_FLAGS) --release
 bitcode: src/main.rs
 	cargo +$(RUST_VERSION) build $(CARGO_FLAGS)
