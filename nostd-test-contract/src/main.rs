@@ -1,3 +1,4 @@
+#![no_builtins]
 #![no_std]
 #![no_main]
 #![feature(default_alloc_error_handler)]
@@ -41,8 +42,8 @@ pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
 
     // let id: BytesN<32> = BytesN::from_array(&e, &[0 as u8; 32]);
     let id = e.register_contract(IncrementContract);
-    let b31 = id.get(31);
-    let b0 = id.get(0);
+    // let b31 = id.get(31);
+    // let b0 = id.get(0);
     // if b31.unwrap() == 1 {
         // panic!()
     // }

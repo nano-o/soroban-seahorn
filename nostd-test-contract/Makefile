@@ -9,7 +9,7 @@ CARGO_FLAGS := -Z build-std=core,alloc,panic_abort --target=x86_64-unknown-linux
 # allow unstable things with stable compiler:
 export RUSTC_BOOTSTRAP := 1
 
-.PHONY: bitcode assembly clean cargo-bloat executable debug-executable verify cex verify-yama
+.PHONY: bitcode assembly clean cargo-bloat executable debug-executable verify cex verify-yama verify-yama-bcmp-impl
 
 cargo-bloat: export RUSTFLAGS := -Warithmetic-overflow -Coverflow-checks=yes -Cpanic=abort
 cargo-bloat: export CARGO_FLAGS := $(CARGO_FLAGS) --release
@@ -31,7 +31,19 @@ bitcode: export CARGO_FLAGS := $(CARGO_FLAGS) --release
 bitcode: src/main.rs
 	cargo +$(RUST_VERSION) build $(CARGO_FLAGS)
 
-assembly: bitcode
+bcmp.bc:
+	clang-$(LLVM_VERSION) -emit-llvm -c bcmp.c -o $@
+
+bitcode_bcmp_impl.bc: bitcode bcmp.bc
+	llvm-link-$(LLVM_VERSION) $$(./find_bc_file.sh) bcmp.bc -o $@
+
+executable_bcmp_impl: bitcode_bcmp_impl.bc
+	clang++-14 bitcode_bcmp_impl.bc ../seahorn/build/run/lib/libsea-rt.a -o $@
+
+assembly_bcmp_impl.ll: bitcode_bcmp_impl.bc
+	llvm-dis-$(LLVM_VERSION) bitcode_bcmp_impl.bc -o assembly_bcmp_impl.ll
+
+assembly.ll: bitcode
 	llvm-dis-$(LLVM_VERSION) $$(./find_bc_file.sh) -o assembly.ll
 
 clean:
@@ -49,3 +61,5 @@ SEA_CONFIG_FILE := sea_base.yaml
 verify-yama: bitcode
 	sea yama -y $(SEA_CONFIG_DIR)/$(SEA_CONFIG_FILE) bpf $$(./find_bc_file.sh) 
 
+verify-yama-bcmp-impl: bitcode_bcmp_impl.bc
+	sea yama -y $(SEA_CONFIG_DIR)/$(SEA_CONFIG_FILE) bpf bitcode_bcmp_impl.bc
