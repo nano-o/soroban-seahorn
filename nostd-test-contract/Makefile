@@ -4,7 +4,7 @@ RUST_VERSION := "nightly-x86_64-unknown-linux-gnu"
 
 # build core stuff without unwinding (so, no dependency on rust_eh_personality, which otherwise may cause linker error)
 # NOTE: do not use `-Z build-std-features=panic_immediate_abort` as this overrides the custom panic handler (which calls __VERIFIER_error).
-CARGO_FLAGS := -Z build-std=core,alloc,panic_abort --target=x86_64-unknown-linux-gnu
+CARGO_FLAGS := -Z build-std-features=panic_immediate_abort -Z build-std=core,alloc,panic_abort -Z build-std-features=panic_immediate_abort --target=x86_64-unknown-linux-gnu
 
 # allow unstable things with stable compiler:
 export RUSTC_BOOTSTRAP := 1
@@ -32,10 +32,10 @@ bitcode: src/main.rs
 	cargo +$(RUST_VERSION) build $(CARGO_FLAGS)
 
 bcmp.bc:
-	clang-$(LLVM_VERSION) -emit-llvm -c bcmp.c -o $@
+	clang-$(LLVM_VERSION) -O3 -flto -emit-llvm -c bcmp.c -o $@
 
 bitcode_bcmp_impl.bc: bitcode bcmp.bc
-	llvm-link-$(LLVM_VERSION) $$(./find_bc_file.sh) bcmp.bc -o $@
+	llvm-link-$(LLVM_VERSION) --internalize $$(./find_bc_file.sh) bcmp.bc -o $@
 
 executable_bcmp_impl: bitcode_bcmp_impl.bc
 	clang++-14 bitcode_bcmp_impl.bc ../seahorn/build/run/lib/libsea-rt.a -o $@
@@ -48,6 +48,7 @@ assembly.ll: bitcode
 
 clean:
 	cargo clean
+	rm bitcode_bcmp_impl.bc assembly_bcmp_impl.ll bcmp.bc executable_bcmp_impl assembly.ll
 
 verify: bitcode
 	sea bpf -m64 --bv-cex --cex=cex.ll $$(./find_bc_file.sh) 
