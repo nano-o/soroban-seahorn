@@ -36,20 +36,11 @@ impl IncrementContract {
 
 #[no_mangle]
 pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
-    // TODO: add method to create a symbolic counter value and check that we catch an overflow
-
+    let nd = nondet_u32();
     let e = Env::default();
-
-    // let id: BytesN<32> = BytesN::from_array(&e, &[0 as u8; 32]);
     let id = e.register_contract(IncrementContract);
-    // let b31 = id.get(31);
-    // let b0 = id.get(0);
-    // if b31.unwrap() == 1 {
-        // panic!()
-    // }
-
     let client = IncrementContractClient::new(&e, &id);
-    let res = client.increment();
-    assert(res == 2); // should fail
-    res as i32
+    let res = client.increment(); // returns 1
+    assert(res == nd); // should fail with e.g. nd = 0
+    nd as i32
 }

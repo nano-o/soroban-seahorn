@@ -32,7 +32,7 @@ bitcode: src/main.rs
 	cargo +$(RUST_VERSION) build $(CARGO_FLAGS)
 
 bcmp.bc:
-	clang-$(LLVM_VERSION) -O3 -flto -emit-llvm -c bcmp.c -o $@
+	clang-$(LLVM_VERSION) -O1 -flto -Xclang -disable-llvm-optzns -emit-llvm -c bcmp.c -o $@
 
 bitcode_bcmp_impl.bc: bitcode bcmp.bc
 	llvm-link-$(LLVM_VERSION) --internalize $$(./find_bc_file.sh) bcmp.bc -o $@
@@ -57,7 +57,7 @@ cex: verify
 	sea exe -m64 $$(./find_bc_file.sh) cex.ll -o cex
 
 SEA_CONFIG_DIR := /home/user/verify-c-common/seahorn
-SEA_CONFIG_FILE := sea_base.yaml
+SEA_CONFIG_FILE := sea_cex_base.yaml
 
 verify-yama: bitcode
 	sea yama -y $(SEA_CONFIG_DIR)/$(SEA_CONFIG_FILE) bpf $$(./find_bc_file.sh) 
