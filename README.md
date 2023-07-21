@@ -4,11 +4,10 @@ This is an experiment to see if Seahorn can be used without too much hassle to v
 
 The idea is to compile smart contracts to LLVM bitcode and have Seahorn analyze that. Compiling to LLVM bitcode can readily be done using the Soroban SDK. However, the resulting bitcode is large, even for a trivial contract, and Seahorn fails to analyze it.
 
-To improve Seahorn's odds, I replaced the Soroban host environment implementation by a bare-bones version (it has just enough to run the increment contract example in `nostd-test-contract`) that does not use the Rust standard library. Even then, the generated code is large (~6000 lines of bitcode just to increment an integer) and Seahorn fails to analyze it. I'm not sure why because I do not understand Seahorn's implementation well enough.
+To improve Seahorn's odds, I replaced the Soroban host environment implementation by a bare-bones version (it has just enough to run the increment contract example in `nostd-test-contract`) that does not use the Rust standard library. Even then, the generated code is large (~6000 lines of bitcode just to increment an integer).
+Seahorn can then analyze this simple case.
 
-Next steps would be to dive further into Seahorn to try to understand the issue.
-However this is a daunting task given I'm faced with 6000 lines of bitcode that I also do not understand.
-I feel like I hit a complexity wall.
+Next steps would be to understand why incrementing an integers takes 6000 lines of bitcode, because that does not bode well for non-trivial contracts.
 
 # Notes
 
